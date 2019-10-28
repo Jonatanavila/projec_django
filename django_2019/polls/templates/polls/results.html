@@ -1,5 +1,7 @@
+</html>
+{% load static %}
 <h1>{{ question.question_text }}</h1>
-
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
 <ul>
 {% for choice in question.choice_set.all %}
     <li><p style="color:blue"> {{ choice.choice_text }}</p> <p style="color:red"> {{ choice.votes }} vote{{ choice.votes|pluralize }}</p></li>
@@ -7,3 +9,4 @@
 </ul>
 
 <a href="{% url 'polls:detail' question.id %}">volver a votar</a>
+</html>
