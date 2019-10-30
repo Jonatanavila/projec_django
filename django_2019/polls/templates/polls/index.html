@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
     <ul>
     {% for question in latest_question_list %}
-      <li><a href="{% url 'polls:detail' question.id %}"> <p style="color:blue"><input type="submit" value="Vote{{ question.question_text }}"></a></li></p>
+      <li><a href="{% url 'polls:detail' question.id %}"> <p style="color:blue"><input type="submit" value="{{ question.question_text }}"></a></li></p>
     {% endfor %}
     </ul>
 {% else %}

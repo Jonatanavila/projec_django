@@ -3,9 +3,11 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
-
 from .models import Choice, Question
-
+from django.http import HttpResponse
+from django.template import loader
+from django.http import Http404
+from django.shortcuts import render
 
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
@@ -35,7 +37,19 @@ class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
 
+def corregir(request, question_id):
+	question = get_object_or_404(Question, pk=question_id)	
+	opciones = question.choice_set.all()
+	elegidas= question.choice_set.filter(pk__in=request.POST.getlist('choice'))
+	c={} 
+	for opcion in opciones:   
+		if opcion.correcto :
+			c[opcion]= opcion in elegidas
+		else:
+			c[opcion] = opcion not in elegidas
+	return render(request,'polls/results.html',{'question': question, 'c': c})
 
+'''
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -53,3 +67,4 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+'''
